@@ -16,7 +16,7 @@ console.log('zzt cli code exec~')
 
 在执行 vite 命令时，
 
-在 vite/package.json 文件中，配置了命令 
+在 vite/package.json 文件中，配置了命令
 
 ```json
 {
@@ -48,7 +48,7 @@ console.log('zzt cli code exec~')
 
 然后给业务代码，加上煮注释熟
 
-demo-project\CLIProject\lib\index.js 
+demo-project\CLIProject\lib\index.js
 
 ```js
 #!/usr/bin/env node
@@ -473,7 +473,7 @@ async function createProjectAction(project) {
     const commandName = process.platform === 'win32' ? 'npm.cmd' : 'npm'
     // 3.帮助执行 npm install 命令
     await execCommand(commandName, ['install'], { cwd: `./${project}`}) // 去对应目录下，执行命令
-    
+
     // 4.帮助执行 npm run dev 命令
     await execCommand(commandName, ['run', 'dev'], { cwd: `./${project}`})
   } catch (err) {
