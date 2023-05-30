@@ -45,7 +45,7 @@ zztcli
 ```json
 {
   "bin": {
-  	"vite": "bin/vite.js"
+    "vite": "bin/vite.js"
   }
 }
 ```
