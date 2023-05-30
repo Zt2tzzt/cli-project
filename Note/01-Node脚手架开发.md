@@ -1,22 +1,46 @@
-创建 CLIProject 项目。
+# Node 脚手架开发
 
-pnpm init 初始化项目。
+## 一、项目初始化
 
-将 `name: zztcli`
+项目初始化，执行命令
 
-创建 demo-project\CLIProject\lib\index.js 文件
+```she
+pnpm init
+```
+
+在 package.json 中，配置项目名称：
+
+package.json
+
+```json
+{
+  "name": "zztcli",
+}
+```
+
+## 二、入口文件
+
+创建入口文件 index.js
+
+lib\index.js
 
 ```js
 console.log('zzt cli code exec~')
 ```
 
-执行命令 zztcli，运行该文件。
+## 三、执行命令
 
+尝试执行如下命令，运行该文件。
 
+```shell
+zztcli
+```
 
-在执行 vite 命令时，
+出现了错误，找不到命令；
 
-在 vite/package.json 文件中，配置了命令
+:recycle: 解决思路：
+
+我们知道，在执行 vite 命令时，`vite/package.json` 文件中，配置了命令
 
 ```json
 {
@@ -26,17 +50,19 @@ console.log('zzt cli code exec~')
 }
 ```
 
-在 vite/bin/vite.js 中，该文件上方有一行代码
+在 `vite/bin/vite.js` 文件中，上方有一行代码
+
+这是一种 bash，表示在环境变量中找 node，来执行代码。
 
 ```js
 #!/usr/bin/env node
 ```
 
-这是一种 bash，表示在环境变量中找 node，来执行代码。
+### 1.“bin”配置
 
+参考 vite 脚手架执行命令（其它脚手架都类似），在 package.json 中，进行如下配置;
 
-
-在 demo-project\CLIProject\package.json 中，进行如下配置;
+package.json
 
 ```json
 {
@@ -46,34 +72,38 @@ console.log('zzt cli code exec~')
 }
 ```
 
-然后给业务代码，加上煮注释熟
+然后给业务代码，加上注释
 
-demo-project\CLIProject\lib\index.js
+lib\index.js
 
 ```js
 #!/usr/bin/env node
 console.log('zzt cli code exec~')
 ```
 
-执行命令
+再次执行命令
 
 ```shell
 zztcli
 ```
 
-发现找不到命令；
+发现仍找不到命令；
 
-因为，如果还没有发布到 npm，就不能 install 安装，就不能使用 npx 去执行 node_modules 下的命令。
+### 2.本地连接
 
-所以要在本地执行命令，要先建立连接 link
+如果还没有发布到 npm，就不能 install 安装，也就不能使用 npx 去执行 node_modules 下的命令。
 
-执行命令，在环境变量中，加入 `zztcli`，建立一个软连接。
+若要在本地执行命令，要先建立连接（link）。
+
+执行命令，
+
+在环境变量中，加入了 `zztcli`，建立一个软连接。
 
 ```shell
 npm link
 ```
 
-在执行命令
+再次执行命令，有输出结果了：
 
 ```shell
 zztcli
@@ -82,19 +112,23 @@ zztcli
 zzt cli code exec~
 ```
 
----
+## 四、解析参数
 
 解析命令中的参数
 
-解析命令
+### 1.--version
+
+比如:解析该命令
 
 ```shell
 zztcli --version
 ```
 
-回顾：process.argv 可以拿到命令中的参数。
+> 【回顾】：在 Node 环境中，`process.argv` 可以拿到命令中的参数。
 
-但自行解析太繁琐，使用工具 commander 工具，TJ 编写。安装该工具
+但命令中的所有参数，使用原生的方式解析，过于繁琐，
+
+推荐使用工具 *commander* 工具（TJ 编写）。安装该工具
 
 ```shell
 pnpm add commander
@@ -102,7 +136,7 @@ pnpm add commander
 
 修改业务代码：
 
-demo-project\CLIProject\lib\index.js
+lib\index.js
 
 ```js
 #!/usr/bin/env node
@@ -116,7 +150,7 @@ program.version(version, '-v --version')
 program.parse(process.argv)
 ```
 
-执行命令
+执行命令：
 
 ```shell
 zztcli --version
@@ -126,11 +160,13 @@ zztcli -v
 # 1.0.0
 ```
 
----
+### 2.增加参数
 
 增强其它 options 的操作。
 
-demo-project\CLIProject\lib\index.js
+`program.option` 方法，用于增加增加命令参数，并给予命令描述；
+
+lib\index.js
 
 ```js
 #!/usr/bin/env node
@@ -140,14 +176,16 @@ const version = require('../package.json').version
 // 1.处理 --version 操作
 program.version(version, '-v --version')
 
-// 2.增强其他的 options 的操作
+// 2.增加其他的 options 的操作
 program.option('-z --zzt', 'a zzt cli program~')
 
 // 解析 process.argv 参数
 program.parse(process.argv)
 ```
 
-执行命令
+执行命令：
+
+使用 --help 时，会展示增加的命令参数；
 
 ```shell
 zztcli -z
@@ -165,9 +203,9 @@ Options:
   -h, --help    display help for command
 ```
 
-:egg: 案例理解：将一个文件，拷贝到目标文件夹
+:egg: 案例理解：增加一个命令参数，这个参数用于将一个文件，拷贝到目标文件夹
 
-demo-project\CLIProject\lib\index.js
+lib\index.js
 
 ```js
 program.option('-d --dest <dest>', 'a destination folder；例如：-d src/components')
@@ -185,11 +223,9 @@ zztcli -d src/componets/xxx
 src/componets/xxx
 ```
 
----
+### 3.--help 扩展
 
-扩展 --help
-
-demo-project\CLIProject\lib\index.js
+lib\index.js
 
 ```js
 // 扩展 --help
@@ -198,7 +234,9 @@ program.on('--help', () => {
 })
 ```
 
-执行命令
+执行命令：
+
+加入了自己打印的文本。
 
 ```shell
 zztcli --help
@@ -214,13 +252,11 @@ Options:
 自己打印的内容~
 ```
 
----
+## 五、逻辑抽取
 
-逻辑抽取
+将如下代码的逻辑，进行抽取：
 
-将如下代码的逻辑进行抽取：
-
-demo-project\CLIProject\lib\index.js
+lib\index.js
 
 ```js
 #!/usr/bin/env node
@@ -249,9 +285,11 @@ program.parse(process.argv)
 console.log(program.opts().dest)
 ```
 
+### 1.--version、--help
+
 抽取 help-options 相关代码
 
-demo-project\CLIProject\lib\core\help-options.js
+lib\core\help-options.js
 
 ```js
 const { program } = require('commander');
@@ -277,7 +315,7 @@ function helpOptions() {
 module.exports = helpOptions
 ```
 
-demo-project\CLIProject\lib\index.js
+lib\index.js
 
 ```js
 #!/usr/bin/env node
@@ -285,7 +323,7 @@ const { program } = require('commander');
 
 const helpOptions = require('./core/help-options')
 
-// 1.配置所有的 options
+// 1.配置所有的 help options
 helpOptions()
 
 // 解析 process.argv 参数
@@ -295,11 +333,15 @@ program.parse(process.argv)
 console.log(program.opts().dest)
 ```
 
----
+## 六、功能编写
+
+### 1.创建项目
 
 增加一些具体的功能。
 
-demo-project\CLIProject\lib\index.js
+比如：执行命令，自动创建一个 vue 项目。
+
+lib\index.js
 
 ```js
 // 2.增加具体的一些功能操作。
@@ -343,11 +385,9 @@ zztcli create xxxx
 创建出来一个项目： xxxx
 ```
 
----
+继续编写 create 命令创建项目的功能：
 
-接续编写 create 命令创建项目的功能：
-
-安装一个库 *download-git-repo*
+安装一个库 *download-git-repo*，用于从远程 git 仓库中，拉取项目下来。
 
 ```shell
 pnpm add download-git-repo
@@ -355,7 +395,9 @@ pnpm add download-git-repo
 
 抽取 git 仓库地址为常量：
 
-demo-project\CLIProject\lib\config\repo-constant.js
+远程仓库中，是要创建项目的模板。
+
+lib\config\repo-constant.js
 
 ```js
 const VUE_REPO = 'direct:https://github.com/coderwhy/vue3_template.git#main'
@@ -367,7 +409,7 @@ module.exports = {
 
 抽取 action 函数：
 
-demo-project\CLIProject\lib\core\actions.js
+lib\core\actions.js
 
 ```js
 const { promisify } = require('util')
@@ -377,7 +419,7 @@ const download = promisify(require('download-git-repo'))
 
 async function createProjectAction(project) {
   // 1.从远程 git 仓库中，clone 下来模板。
-  // 默认不支持 promise
+  // 默认不支持 promise，要导入 Node 中的 util 模块，使用 promisify 方法包裹，才能使用 promise。
   /* download(VUE_REPO, project, { clone: true }, (err) => {
     if (err) console.log('发生错误：', err)
   }) */
@@ -392,7 +434,7 @@ async function createProjectAction(project) {
 module.exports = { createProjectAction }
 ```
 
-demo-project\CLIProject\lib\index.js
+lib\index.js
 
 ```js
 const { createProjectAction } = require('./core/actions')
@@ -407,19 +449,19 @@ program
 执行命令
 
 ```shell
-zztcli create haha
+zztcli create haha # 使用预设的模板，创建了 haha 项目
 ```
 
----
+#### 1.给予提示、自动执行命令
 
 拉取模板后，给予提示，帮助执行命令。
 
-抽取 execCommand 方法：
+抽取 `execCommand` 方法：
 
-demo-project\CLIProject\lib\utils\exec-command.js
+lib\utils\exec-command.js
 
 ```js
-const { spawn } = require('child_process') // 借助于 child_process 模块中的 spawn，帮助执行命令，开启一个进程。
+const { spawn } = require('child_process') // 借助于 child_process 模块中的 spawn，帮助执行命令，会开启一个进程。
 
 function execCommand(...args) {
   return new Promise((resolve, reject) => {
@@ -443,7 +485,7 @@ module.exports = execCommand
 
 在 action 中，使用：
 
-demo-project\CLIProject\lib\core\actions.js
+lib\core\actions.js
 
 ```js
 const { promisify } = require('util')
@@ -468,12 +510,11 @@ async function createProjectAction(project) {
     console.log(`npm run install`)
     console.log(`npm run dev`) */
 
-    console.log('process.platform:', process.platform) // Win32
     // windows 平台的特殊适配
+    console.log('process.platform:', process.platform) // Win32    
     const commandName = process.platform === 'win32' ? 'npm.cmd' : 'npm'
     // 3.帮助执行 npm install 命令
     await execCommand(commandName, ['install'], { cwd: `./${project}`}) // 去对应目录下，执行命令
-
     // 4.帮助执行 npm run dev 命令
     await execCommand(commandName, ['run', 'dev'], { cwd: `./${project}`})
   } catch (err) {
@@ -484,24 +525,26 @@ async function createProjectAction(project) {
 module.exports = { createProjectAction }
 ```
 
----
+### 2.创建组件
 
 使用脚手架，创建 vue 组件。
 
-创建 action：
+抽取 action：
 
-demo-project\CLIProject\lib\core\actions.js
+lib\core\actions.js
 
 ```js
 async function addComponentAction(cpnname) {
-  // 1.创建一个组件：编写组件的模板，更具内容黑痣模板中填充的数据
+  // 1.创建一个组件：编写组件的模板，根据内容，传入模板中填充的数据
   console.log('添加一个组件，到某个文件夹中~', cpnname)
 }
 
 module.exports = { addComponentAction }
 ```
 
-在 program 中，应用：
+给 `program` 中，应用 action：
+
+lib\index.js
 
 ```js
 const { addComponentAction } = require('./core/actions')
@@ -512,13 +555,15 @@ program
   .action(addComponentAction)
 ```
 
-创建一个 vue 模板，但是以 .ejs 后缀名结尾，这是一个模板引擎。详见[官方文档](https://ejs.co/)
+创建一个 vue 模板，但是以 .ejs 后缀名结尾，
 
-VSCode 安装 EJS language support 插件。
+> 【补充】：ejs 是一个模板引擎。详见[官方文档](https://ejs.co/)
+>
+> 给 VSCode 安装 EJS language support 插件，给予更好的提示。
 
-创建 template/component.vue 组件
+创建该模板：
 
-demo-project\CLIProject\lib\template\component.vue.ejs
+lib\template\component.vue.ejs
 
 ```ejs
 <script setup>
@@ -546,9 +591,9 @@ const msg = ref('哈哈哈')
 pnpm add ejs
 ```
 
-抽取 util
+抽取 util，用于编译模板文件，并传入参数。
 
-demo-project\CLIProject\lib\utils\compile-ejs.js
+lib\utils\compile-ejs.js
 
 ```js
 const path = require('path')
@@ -575,11 +620,9 @@ function compileEjs(tempName, data) {
 module.exports = compileEjs
 ```
 
-完善 action，
-
 封装写入文件的工具。
 
-demo-project\CLIProject\lib\utils\write-file.js
+lib\utils\write-file.js
 
 ```js
 const fs = require('fs')
@@ -591,9 +634,9 @@ function writeFile(path, content) {
 module.exports = writeFile
 ```
 
-在 action 中使用：
+完善 action，，在 action 中使用封装的两个工具：
 
-demo-project\CLIProject\lib\core\actions.js
+lib\core\actions.js
 
 ```js
 const compileEjs = require('../utils/compile-ejs')
@@ -614,9 +657,11 @@ module.exports = { addComponentAction }
 
 创建的组件，不一定在 “src/components" 这个目录下，
 
-应该从 --dest 中动态获取路径。
+应该从 --dest 命令参数中，动态获取路径。
 
-demo-project\CLIProject\lib\core\actions.js
+使用 `program.opts().dest`
+
+lib\core\actions.js
 
 ```js
 const compileEjs = require('../utils/compile-ejs')
@@ -630,7 +675,7 @@ async function addComponentAction(cpnname) {
 
   // 2.将 res 写入到对应的文件中。
   const dest = program.opts().dest || 'src/components'
-  await writeFile(`src/components/${cpnname}.vue`, res)
+  await writeFile(`${dest}/${cpnname}.vue`, res)
   console.log('创建组件成功：', cpnname + '.vue')
 }
 
