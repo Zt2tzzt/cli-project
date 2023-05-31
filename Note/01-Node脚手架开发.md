@@ -8,7 +8,7 @@
 pnpm init
 ```
 
-在 package.json 中，配置项目名称：
+在 `package.json` 中，配置项目名称：
 
 package.json
 
@@ -20,7 +20,7 @@ package.json
 
 ## 二、入口文件
 
-创建入口文件 index.js
+创建入口文件 `index.js`
 
 lib\index.js
 
@@ -128,7 +128,7 @@ zztcli --version
 
 但命令中的所有参数，使用原生的方式解析，过于繁琐，
 
-推荐使用工具 *commander* 工具（TJ 编写）。安装该工具
+推荐使用工具 *commander* 工具（TJ 编写的）。安装该工具
 
 ```shell
 pnpm add commander
@@ -203,14 +203,14 @@ Options:
   -h, --help    display help for command
 ```
 
-:egg: 案例理解：增加一个命令参数，这个参数用于将一个文件，拷贝到目标文件夹
+:egg: 案例理解：增加一个命令参数，这个参数用于将一个文件，拷贝到目标文件夹，为它添加描述。
 
 lib\index.js
 
 ```js
 program.option('-d --dest <dest>', 'a destination folder；例如：-d src/components')
 
-// 获取额外传递的参数
+// 获取命令中额外传递的参数
 console.log(program.opts().dest)
 ```
 
@@ -561,7 +561,7 @@ program
 >
 > 给 VSCode 安装 EJS language support 插件，给予更好的提示。
 
-创建该模板：
+创建 ejs 模板：
 
 lib\template\component.vue.ejs
 
@@ -611,7 +611,6 @@ function compileEjs(tempName, data) {
         console.log('编译模板失败~，err:', err)
         return
       }
-
       resolve(res)
     })
   })
@@ -681,3 +680,11 @@ async function addComponentAction(cpnname) {
 
 module.exports = { addComponentAction }
 ```
+
+执行命令：
+
+```shell
+# 在 src/views/home/cpns 目录下，创建 HomeHeader 组件。
+zztcli addcpn HomeHeader --dest src/views/home/cpns
+```
+
