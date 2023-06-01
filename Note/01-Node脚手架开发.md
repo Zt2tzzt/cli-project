@@ -2,7 +2,9 @@
 
 ## 一、项目初始化
 
-项目初始化，执行命令
+项目初始化；
+
+执行命令：
 
 ```she
 pnpm init
@@ -50,6 +52,8 @@ zztcli
 }
 ```
 
+> “bin” 通常指代“二进制（binary）”
+
 在 `vite/bin/vite.js` 文件中，上方有一行代码
 
 这是一种 bash，表示在环境变量中找 node，来执行代码。
@@ -60,7 +64,9 @@ zztcli
 
 ### 1.“bin”配置
 
-参考 vite 脚手架执行命令（其它脚手架都类似），在 package.json 中，进行如下配置;
+参考 vite 脚手架执行命令（其它脚手架都类似）;
+
+在 `package.json` 中，进行如下配置;
 
 package.json
 
@@ -91,13 +97,13 @@ zztcli
 
 ### 2.本地连接
 
-如果还没有发布到 npm，就不能 install 安装，也就不能使用 npx 去执行 node_modules 下的命令。
+如果还没有发布到 npm，就不能 install 安装，也就不能使用 `npx` 去执行 node_modules 下的命令。
 
 若要在本地执行命令，要先建立连接（link）。
 
-执行命令，
-
 在环境变量中，加入了 `zztcli`，建立一个软连接。
+
+执行命令，
 
 ```shell
 npm link
@@ -128,7 +134,9 @@ zztcli --version
 
 但命令中的所有参数，使用原生的方式解析，过于繁琐，
 
-推荐使用工具 *commander* 工具（TJ 编写的）。安装该工具
+推荐使用工具 *commander* 工具（TJ 编写的）。
+
+安装该工具:
 
 ```shell
 pnpm add commander
@@ -225,6 +233,8 @@ src/componets/xxx
 
 ### 3.--help 扩展
 
+加入了自己打印的文本。
+
 lib\index.js
 
 ```js
@@ -235,8 +245,6 @@ program.on('--help', () => {
 ```
 
 执行命令：
-
-加入了自己打印的文本。
 
 ```shell
 zztcli --help
@@ -287,7 +295,7 @@ console.log(program.opts().dest)
 
 ### 1.--version、--help
 
-抽取 help-options 相关代码
+抽取 "help options" 相关代码
 
 lib\core\help-options.js
 
@@ -446,7 +454,7 @@ program
   .action(createProjectAction)
 ```
 
-执行命令
+执行命令：
 
 ```shell
 zztcli create haha # 使用预设的模板，创建了 haha 项目
@@ -591,7 +599,7 @@ const msg = ref('哈哈哈')
 pnpm add ejs
 ```
 
-抽取 util，用于编译模板文件，并传入参数。
+抽取 util，用于编译 ejs 模板文件，并注入参数。
 
 lib\utils\compile-ejs.js
 
