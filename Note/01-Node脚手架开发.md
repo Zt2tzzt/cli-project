@@ -84,6 +84,7 @@ lib\index.js
 
 ```js
 #!/usr/bin/env node
+
 console.log('zzt cli code exec~')
 ```
 
@@ -132,7 +133,7 @@ zztcli --version
 
 > 【回顾】：在 Node 环境中，`process.argv` 可以拿到命令中的参数。
 
-但命令中的所有参数，使用原生的方式解析，过于繁琐，
+命令中的所有参数，使用原生的方式解析，过于繁琐，
 
 推荐使用工具 *commander* 工具（TJ 编写的）。
 
@@ -148,6 +149,7 @@ lib\index.js
 
 ```js
 #!/usr/bin/env node
+
 const { program } = require('commander');
 
 const version = require('../package.json').version // 动态获取 package.json 中的 version
@@ -211,7 +213,9 @@ Options:
   -h, --help    display help for command
 ```
 
-:egg: 案例理解：增加一个命令参数，这个参数用于将一个文件，拷贝到目标文件夹，为它添加描述。
+:egg: 案例理解：
+
+增加一个命令参数，这个参数用于将一个文件，拷贝到目标文件夹，为它添加描述。
 
 lib\index.js
 
@@ -565,7 +569,7 @@ program
 
 创建一个 vue 模板，但是以 .ejs 后缀名结尾，
 
-> 【补充】：ejs 是一个模板引擎。详见[官方文档](https://ejs.co/)
+> 【补充】：ejs 是一个模板引擎。详见[官方文档](https://ejs.co/)。
 >
 > 给 VSCode 安装 EJS language support 插件，给予更好的提示。
 
@@ -695,4 +699,3 @@ module.exports = { addComponentAction }
 # 在 src/views/home/cpns 目录下，创建 HomeHeader 组件。
 zztcli addcpn HomeHeader --dest src/views/home/cpns
 ```
-
