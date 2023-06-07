@@ -103,7 +103,7 @@ zztcli
 
 在环境变量中，加入了 `zztcli`，建立一个软连接。
 
-执行命令，
+执行命令：
 
 ```shell
 npm link
@@ -650,7 +650,7 @@ const compileEjs = require('../utils/compile-ejs')
 const writeFile = require('../utils/write-file')
 
 async function addComponentAction(cpnname) {
-  // 1.创建一个组件：编写组件的模板，更具内容黑痣模板中填充的数据
+  // 1.创建一个组件：编写组件的模板，根据内容赋值模板中，待填充的数据。
   console.log('添加一个组件，到某个文件夹中~', cpnname)
   const res = await compileEjs('component.vue.ejs', { name: cpnname, lowername: cpnname.toLowerCase() })
 
