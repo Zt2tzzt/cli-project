@@ -42,7 +42,7 @@ zztcli
 
 :recycle: 解决思路：
 
-我们知道，在执行 vite 命令时，`vite/package.json` 文件中，配置了命令
+我们知道，在执行 vite 命令时，`vite/package.json` 文件中，配置了命令：
 
 ```json
 {
@@ -66,7 +66,7 @@ zztcli
 
 参考 vite 脚手架执行命令（其它脚手架都类似）;
 
-在 `package.json` 中，进行如下配置;
+在 `package.json` 中，进行如下配置；
 
 package.json
 
@@ -78,7 +78,7 @@ package.json
 }
 ```
 
-然后给业务代码，加上注释
+然后给业务代码，加上注释：
 
 lib\index.js
 
@@ -133,7 +133,7 @@ zztcli --version
 
 > 【回顾】：在 Node 环境中，`process.argv` 可以拿到命令中的参数。
 
-命令中的所有参数，使用原生的方式解析，过于繁琐，
+命令中的所有参数，使用原生的方式解析，过于繁琐：
 
 推荐使用工具 *commander* 工具（TJ 编写的）。
 
@@ -174,7 +174,7 @@ zztcli -v
 
 增强其它 options 的操作。
 
-`program.option` 方法，用于增加增加命令参数，并给予命令描述；
+`program.option` 方法，用于增加命令参数，并给予命令描述；
 
 lib\index.js
 
@@ -397,7 +397,7 @@ zztcli create xxxx
 创建出来一个项目： xxxx
 ```
 
-继续编写 create 命令创建项目的功能：
+继续编写 create 命令，创建项目的功能：
 
 安装一个库 *download-git-repo*，用于从远程 git 仓库中，拉取项目下来。
 
