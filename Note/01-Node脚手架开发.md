@@ -22,7 +22,7 @@ package.json
 
 ## 二、入口文件
 
-创建入口文件 `index.js`
+创建入口文件 `index.js`：
 
 lib\index.js
 
@@ -102,7 +102,7 @@ zztcli
 
 若要在本地执行命令，要先建立连接（link）。
 
-在环境变量中，加入了 `zztcli`，建立一个软连接。
+在环境变量中，加入 `zztcli`，建立一个软连接。
 
 执行命令：
 
@@ -226,7 +226,7 @@ program.option('-d --dest <dest>', 'a destination folder；例如：-d src/compo
 console.log(program.opts().dest)
 ```
 
-执行命令
+执行命令：
 
 ```shell
 zztcli -d src/componets/xxx
